@@ -30,7 +30,7 @@
 		<nav class="navegacion">
 			<ul class="menu" >
 				<!-- TITULAR -->
-				<li class="title-menu">Todas las categorias</li>
+				<li class="title-menu">Todas las categorias cambio</li>
 				<!-- TITULAR -->
 
 				<li><a href="#"><span class="fa fa-home icon-menu"></span>Inicio</a></li>
