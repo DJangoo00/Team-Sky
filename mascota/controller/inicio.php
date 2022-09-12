@@ -21,17 +21,21 @@ if($_POST["inicio"]){
 		$_SESSION['usuario'] = $fila['user'];
 		
 				/// dependiendo del tipo de usuario lo redireccinamos a una pagina
-		/// si es un client
+		/// si es un administrador
 		if($_SESSION['tipo'] == 1){
 			header("Location: ../model/admin/index1.php"); 
 			exit();
 		}
-		/// si es un vendedor
+		/// si es un veterinario
 		elseif($_SESSION['tipo'] == 2){
-			header("Location: ../model/funcionario/index1.php"); 
+			header("Location: ../model/veterinario/index1.php"); 
 			exit();		
 		}
-		
+		/// si es un usuario
+		elseif($_SESSION['tipo'] == 3){
+			header("Location: ../model/usuario/index1.php"); 
+			exit();		
+		}
 		
 	}else{
 		/// si el usuario y la clave son incorrectas lo lleva a la pagina de inio y se muestra un mensaje

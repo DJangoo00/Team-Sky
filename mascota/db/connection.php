@@ -2,7 +2,7 @@
   $hostname = "localhost";
   $username = "root";
   $password = "";
-  $database = "pruebas";
+  $database = "happy_pets_db";
   
   $mysqli = new mysqli ($hostname, $username, $password, $database);
 
