@@ -23,7 +23,7 @@ if($_POST["inicio"]){
 				/// dependiendo del tipo de usuario lo redireccinamos a una pagina
 		/// si es un administrador
 		if($_SESSION['tipo'] == 1){
-			header("Location: ../model/admin/index1.php"); 
+			header("Location: ../model/admin/index.php"); 
 			exit();
 		}
 		/// si es un veterinario

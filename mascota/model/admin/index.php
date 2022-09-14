@@ -1,82 +1,155 @@
+
 <?php
-    require_once("../../db/connection.php");
-    session_start();
-    $query = "SELECT * FROM user, tip_user WHERE cedula = '".$_SESSION['id_user']."' AND user.id_tip_user = tip_user.id_tip_user";
-    $usuarios = mysqli_query($mysqli, $query) or die(mysqli_error());
-    $row_usuarios = mysqli_fetch_assoc($usuarios);
+session_start();
+require_once("../../db/connection.php");
+include("../../controller/validarSesion.php");
+$sql = "SELECT * FROM user, tip_user WHERE user = '".$_SESSION['usuario']."' AND user.id_tip_user = tip_user.id_tip_user";
+$usuarios = mysqli_query($mysqli, $sql);
+$usua = mysqli_fetch_assoc($usuarios);
+
 
 ?>
+<form method="POST">
+
+    <tr>
+        <td colspan='2' align="center"><?php echo $usua['nombres']?></td>
+    </tr>
+<tr><br>
+    <td colspan='2' align="center">
+    
+    
+        <input type="submit" value="Cerrar sesión" name="btncerrar" /></td>
+        <input type="submit" formaction="../index.php" value="Regresar" />
+    </tr>
+</form>
+
+<?php 
+
+if(isset($_POST['btncerrar']))
+{
+	session_destroy();
+
+   
+    header('location: ../../index.html');
+}
+	
+?>
+
+</div>
+
+</div>
+
+
+
 
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Formulario Inicio Sesion | CAEC</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Menu Administrador</title>
 </head>
+    <body>
+        <section class="title">
+            <h1>INTERFAZ    <?php echo $usua['tip_user']?></h1>
+        </section>
+    
+        <nav class="navegacion">
+           
+            <ul class="menu wrapper" >
+    
+                <li class="first-item">
+                    <a href="add_tipo_usuario.php">
+                        <img src="img/analisis.png" alt="" class="imagen">
+                        <span class="text-item">Agregar Tipo de Usuario</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="add_usuario.php">
+                        <img src="img/ejecucion.png" alt="" class="imagen">
+                        <span class="text-item">Agregar Usuario</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="img/implementar.jpg" alt="" class="imagen">
+                        <span class="text-item">OPCION 3</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="img/planear.png" alt="" class="imagen">
+                        <span class="text-item">OPCION 4</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 5</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li class="first-item">
+                    <a href="#">
+                        <img src="img/analisis.png" alt="" class="imagen">
+                        <span class="text-item">OPCION 6</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 7</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 8</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 9</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+    
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 10</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
 
-<body onload="form1.usuario.focus()">
-
-    <div class="login-box">
-        <!--crea una caja imaginaria-->
-        
-
-        <!--insertamos una imagen-->
-        <h1>REPORTE POR FECHAS <?php echo $row_usuarios['nombres'];?>  <?php echo $row_usuarios['tip_user'];?></h1>
-        <!--Inserta titulo-->
-        <form method="POST" name="form1" id="form1" autocomplete="off">
-            <!--crea formularios-->
-            <table width="1095" border="1">
-                <tr>
-                    <label for="fechini">Fecha Inicial </label>
-                    <input type="date" name="fechini" id="fechini">
-                    <label for="fechfin">Fecha Final</label>
-                    <input type="date" name="fechfin" id="fechfin">
-                    <input type="text" value="<?php echo $row_usuarios['tip_user'];?>">
-                    <input type="submit" name="inicio" id="inicio" value="BUSCAR">
-                </tr>
-                <tr bgcolor="#E9D2FF">
-                    <td width="49" align="center">ID</td>
-                    <td width="149" align="center">NOMBRE</td>
-                    <td width="49" align="center">Fecha Ingreso</td>
-                    <td width="149" align="center">fecha Final</td>
-                </tr>
-
-
-                <?php 
+                <li>
+                    <a href="#">
+                        <img src="" alt="" class="imagen">
+                        <span class="text-item">OPCION 11</span>
+                        <span class="down-item"></span>
+                    </a>
+                </li>
+                
+            </ul>
             
-                if(isset($_POST["inicio"]))
-                {
-	                $btn=$_POST["inicio"];
-                	//$bus=$_POST["txtbus"]; para buscar con la cedula
-	                $fechini=$_POST["fechini"];
-	                $fechfinal=$_POST["fechfin"];
-                    if($fechini=="" || $fechfinal=="")
-	                {
-	                    echo '<script>alert (" DATOS VACIOS, INGRESE FECHA INICIAL Y FINAL PARA CONSULTAR");</script>';
-	
-        	        }
-	                else
-	                {
-                        $sql="SELECT * FROM `reporte` WHERE `f_ini` >= '$fechini' AND f_sal <= '$fechfinal'"; 
-                        $i=0;
-                        $cs = mysqli_query($mysqli, $sql);
-                        while($resul=mysqli_fetch_array($cs))
-                            {
-                            $i++;
-                    ?>
-            <tr>
-                <td align="center"><span class="Estilo30"><?php echo $resul['id_entrada']?></span></td>
-            </tr>
-
-    <?php }}}?>
-            </table>
-
-
-        </form>
-    </div>
-</body>
-
+        </nav>
+    </body>
 </html>
-
