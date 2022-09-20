@@ -1,0 +1,48 @@
+<div class="card" >
+    <div class="card-header">
+        <div class="panel panel-success text-center">
+            <div class="panel-heading text-info"><b>MODIFICAR USUARIO:</b></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="cedula" class="col-sm-2 col-form-label"><b>Cédula:</b></label>
+            <div class="col-sm-2">
+                <input id="cedula" class="form-control newuser" type="number" disabled value = "[cedula]">
+            </div>
+            <label for="id_tip_user" class="col-sm-3 col-form-label"><b>Tipo Usuario:</b></label>
+            <div class="col-sm-3">
+                <select id="id_tip_user" class="form-control newuser">[tipos]</select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="nombres" class="col-sm-2 col-form-label"><b>Nombres:</b></label>
+            <div class="col-sm-5">
+                <input id="nombres" class="form-control newuser" type="text" value = "[nombres]">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="user" class="col-sm-2 col-form-label"><b>Usuario:</b></label>
+            <div class="col-sm-2">
+                <input id="user" class="form-control newuser" type="text" value = "[user]">
+            </div>
+            <label for="password" class="col-sm-2 col-form-label"><b>Contraseña:</b></label>
+            <div class="col-sm-3">
+                <input id="password" class="form-control newuser" type="password" placeholder="nueva" value = "[password]">
+            </div>
+            <div class="col-sm-3">
+                <input id="cpassword" class="form-control newuser" type="password" placeholder="confirmar" value = "[password]">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-4 text-center">
+                <button class="btn btn-success" onclick="guardarUsuario()">Crear</button>
+            </div>
+            <div class="col-sm-2 text-center">
+                <button class="btn btn-primary" onclick="cancelarUsuario()">Cancelar</button>
+            </div>            
+        </div>
+    </div>
+</div>

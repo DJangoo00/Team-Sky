@@ -34,7 +34,31 @@ if(isset($_POST['accion'])){
         }else{
             $contenido = "No LLEGO";
         }
-
+    }elseif($_POST['accion']=='modificar_usuario'){
+        $form = "usuario_modificar.html";
+        // $contenido = "Vamos a modificar un usuario".$_POST["id"];
+        $contenido=cargar_template("forms/$form");
+        $usuario = mysqli_query($xbd, "SELECT * FROM user WHERE cedula = '$_POST[id]'");
+        if(mysqli_num_rows ($usuario)>0){
+            $datos = mysqli_fetch_assoc($usuario);
+            // $cedula = $datos["cedula"];
+            $contenido=str_replace('[cedula]',$datos["cedula"],$contenido);
+            $contenido=str_replace('[nombres]',$datos["nombres"],$contenido);
+            $contenido=str_replace('[user]',$datos["user"],$contenido);
+            $contenido=str_replace('[password]',$datos["password"],$contenido);
+        }
+        $tipos = mysqli_query($xbd, "SELECT * FROM tip_user");
+        $option = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($tipos)){
+            if(isset($datos["id_tip_user"]) && $datos["id_tip_user"] == $opciones["id_tip_user"] ){
+                $option .= "<option value=\"$opciones[id_tip_user]\" selected >$opciones[tip_user]</option>";
+            }else{
+                $option .= "<option value=\"$opciones[id_tip_user]\">$opciones[tip_user]</option>";
+            }
+            
+        }
+        $contenido=str_replace('[tipos]',$option,$contenido);
+        
     }elseif($_POST['accion']=='lst_veterinarios'){
         $form = "lis_adm_veterinarios.html";
         $contenido=cargar_template("forms/$form");

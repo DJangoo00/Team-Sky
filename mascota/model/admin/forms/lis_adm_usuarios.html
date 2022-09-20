@@ -80,4 +80,10 @@
             }
         })
     }
+    $(".edituser").click();
+    $(document).off('click', '.edituser').on('click', '.edituser', (function(e) {
+		alert(this.id)
+        $("#lst_admusuarios").hide();
+        $("#dtsfrm").load('generador.php',{accion:'modificar_usuario',id:this.id});    
+	}));
 </script>
