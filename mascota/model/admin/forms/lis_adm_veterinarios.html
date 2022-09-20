@@ -1,0 +1,72 @@
+<section id="lst_admusuarios">
+    <div class="panel panel-success text-center">
+        <div class="panel-heading text-info"><b>ADMINISTRACIÓN DE VETERINARIOS</b></div>
+    </div>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span id="inputGroup-sizing-sm" class="input-group-text">Veterinarios</span>
+                <input id="cmbqd_nompro" type="text" required class="bqdlis form-control-sm bqdprod" placeholder="Nombre">
+                <span class="input-group-text adduser" title="Crear Usuario" onclick="fn_new_usuario()"><i class="bi bi-clipboard-plus"></i></span>
+                <span class="input-group-text" title="Filtrar Usuarios" onclick="bqd_usuario()"><i width="32" height="32" class="bi bi-search"></i>
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div id="lis_iteminv">
+        [lstadmusuarios]
+    </div>
+    </div>
+</section>
+<div id="dtsfrm" class="container"></div>
+<script>
+    function fn_new_usuario(){
+        $("#lst_admusuarios").hide();
+        $("#dtsfrm").load('generador.php',{accion:'newusuario'});
+        
+    }
+    function cancelarUsuario(){
+        $("#lst_admusuarios").show();
+        $("#dtsfrm").html('');
+    }
+    function guardarUsuario(){
+        var data = new Object();
+        
+        $(".newuser").css('background-color','#fff');
+        if($("#cedula").val() <= 0){
+            alert("No tiene cédula correcta");
+            $("#cedula").css('background-color','#63F516');
+            return false;
+        }
+        data.cedula = $("#cedula").val();
+        if($("#id_tip_user").val() == '--'){
+            alert("Seleccione un Tipo de Usuario");
+            $("#id_tip_user").css('background-color','#63F516');
+            return false;
+        }
+        data.id_tip_user = $("#id_tip_user").val();
+        if($("#nombres").val() == '' || parseInt($("#nombres").val().length) < 5){
+            alert("Digite los nombres");
+            $("#nombres").css('background-color','#63F516');
+            return false;
+        }
+        data.nombres = $("#nombres").val();
+        if($("#user").val() == '' || parseInt($("#user").val().length) < 5){
+            alert("Digite un Usuario");
+            $("#user").css('background-color','#63F516');
+            return false;
+        }
+        data.user = $("#user").val();
+        if($("#password").val() == '' || ($("#password").val() != $("#cpassword").val())){
+            alert("Las contraseñas no son iguales por favor revise");
+            $("#password").css('background-color','#63F516');
+            $("#cpassword").css('background-color','#63F516');
+            return false;
+        }
+        data.password = $("#password").val();
+        $.post('generador.php',{accion:'ingnewuser',data}, function(res){
+            console.log(data);
+        })
+    }
+</script>

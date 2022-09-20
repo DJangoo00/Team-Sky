@@ -3,12 +3,18 @@
 session_start();
 require_once("../../db/connection.php");
 include("../../controller/validarSesion.php");
-$sql = "SELECT * FROM user, tip_user WHERE user = '".$_SESSION['usuario']."' AND user.id_tip_user = tip_user.id_tip_user";
-$usuarios = mysqli_query($mysqli, $sql);
-$usua = mysqli_fetch_assoc($usuarios);
+
+ if ($mysqli) {
+    include('generador.php');
+    require('plantilla.html');
+ }else{
+    header('location: ../../index.html');
+ }
 
 
 ?>
+
+<!--
 <form method="POST">
 
     <tr>
@@ -152,4 +158,4 @@ if(isset($_POST['btncerrar']))
             
         </nav>
     </body>
-</html>
+</html> -->
