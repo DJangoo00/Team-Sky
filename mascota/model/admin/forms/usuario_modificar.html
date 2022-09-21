@@ -25,6 +25,7 @@
             <label for="user" class="col-sm-2 col-form-label"><b>Usuario:</b></label>
             <div class="col-sm-2">
                 <input id="user" class="form-control newuser" type="text" value = "[user]">
+                <input id="user_original"  type="hidden" value = "[user]">
             </div>
             <label for="password" class="col-sm-2 col-form-label"><b>Contraseña:</b></label>
             <div class="col-sm-3">
@@ -38,7 +39,7 @@
     <div class="card-footer">
         <div class="form-group row">
             <div class="offset-sm-2 col-sm-4 text-center">
-                <button class="btn btn-success" onclick="guardarUsuario()">Crear</button>
+                <button class="btn btn-success" onclick="modificarUsuario()">Modificar</button>
             </div>
             <div class="col-sm-2 text-center">
                 <button class="btn btn-primary" onclick="cancelarUsuario()">Cancelar</button>

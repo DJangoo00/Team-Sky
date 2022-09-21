@@ -19,7 +19,9 @@
     </div>
     </div>
 </section>
-<div id="dtsfrm" class="container"></div>
+<div id="dtsfrm" class="container">
+    hola
+</div>
 <script>
     function fn_new_usuario(){
         $("#lst_admusuarios").hide();
@@ -80,10 +82,62 @@
             }
         })
     }
-    $(".edituser").click();
     $(document).off('click', '.edituser').on('click', '.edituser', (function(e) {
-		alert(this.id)
         $("#lst_admusuarios").hide();
         $("#dtsfrm").load('generador.php',{accion:'modificar_usuario',id:this.id});    
 	}));
+    function modificarUsuario(){
+        var data = new Object();        
+        $(".newuser").css('background-color','#fff');
+        if($("#cedula").val() <= 0){
+            alert("No tiene cédula correcta");
+            $("#cedula").css('background-color','#63F516');
+            return false;
+        }
+        data.cedula = $("#cedula").val();
+        if($("#id_tip_user").val() == '--'){
+            alert("Seleccione un Tipo de Usuario");
+            $("#id_tip_user").css('background-color','#63F516');
+            return false;
+        }
+        data.id_tip_user = $("#id_tip_user").val();
+        if($("#nombres").val() == '' || parseInt($("#nombres").val().length) < 5){
+            alert("Digite los nombres");
+            $("#nombres").css('background-color','#63F516');
+            return false;
+        }
+        data.nombres = $("#nombres").val();
+        data.moduser = false;
+        if($("#user").val() != $("#user_original").val()){
+            data.moduser = true;
+        }
+        if($("#user").val() == '' || parseInt($("#user").val().length) < 5){
+            alert("Digite un Usuario");
+            $("#user").css('background-color','#63F516');
+            return false;
+        }
+        data.user = $("#user").val();
+        if($("#password").val() == '' || ($("#password").val() != $("#cpassword").val())){
+            alert("Las contraseñas no son iguales por favor revise");
+            $("#password").css('background-color','#63F516');
+            $("#cpassword").css('background-color','#63F516');
+            return false;
+        }
+        if($("#password").val().length <8){
+            alert("La contraseña no tiene 8 carateres minimo.")
+            return false;
+        }
+        data.password = $("#password").val();
+        $.post('generador.php',{accion:'actualizar_usuario',data}, function(res){
+            if(res == 1){
+                alert("El usuario ya existe");
+            }else if(res == 2){
+                alert("Se modifico el usuario");
+                acc_mod('ini');
+            }else if(res == 3){
+                alert("No se modifico el usuario");
+                acc_mod('ini');
+            }
+        })
+    }
 </script>

@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-require_once("../../db/connection.php");
+require_once("../../db/connection.php"); ///Conexión base de datos
 include("../../controller/validarSesion.php");
 
  if ($mysqli) {

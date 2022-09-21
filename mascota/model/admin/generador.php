@@ -36,12 +36,10 @@ if(isset($_POST['accion'])){
         }
     }elseif($_POST['accion']=='modificar_usuario'){
         $form = "usuario_modificar.html";
-        // $contenido = "Vamos a modificar un usuario".$_POST["id"];
         $contenido=cargar_template("forms/$form");
         $usuario = mysqli_query($xbd, "SELECT * FROM user WHERE cedula = '$_POST[id]'");
         if(mysqli_num_rows ($usuario)>0){
             $datos = mysqli_fetch_assoc($usuario);
-            // $cedula = $datos["cedula"];
             $contenido=str_replace('[cedula]',$datos["cedula"],$contenido);
             $contenido=str_replace('[nombres]',$datos["nombres"],$contenido);
             $contenido=str_replace('[user]',$datos["user"],$contenido);
@@ -58,7 +56,27 @@ if(isset($_POST['accion'])){
             
         }
         $contenido=str_replace('[tipos]',$option,$contenido);
-        
+    }elseif($_POST['accion']=='actualizar_usuario'){
+        if(isset($_POST["data"])){
+            $modificar = true;
+            if($_POST["data"]["moduser"] == 'true'){
+                $validar = mysqli_query($xbd, "SELECT cedula FROM user WHERE user = '".$_POST["data"]["user"]."'");
+                if(mysqli_num_rows ($validar)>0){
+                    $modificar = false;
+                    $contenido = 1;
+                }
+            }
+            if($modificar){
+                $actualizar = mysqli_query($xbd, "UPDATE user SET nombres ='".$_POST["data"]["nombres"]."',user = '".$_POST["data"]["user"]."',password = '".$_POST["data"]["password"]."',id_tip_user = '".$_POST["data"]["id_tip_user"]."' WHERE cedula ='".$_POST["data"]["cedula"]."'");
+                if($actualizar){
+                    $contenido = 2;
+                }else{
+                    $contenido = 3;
+                }
+            }            
+        }else{
+            $contenido = "No LLEGO";
+        }
     }elseif($_POST['accion']=='lst_veterinarios'){
         $form = "lis_adm_veterinarios.html";
         $contenido=cargar_template("forms/$form");
