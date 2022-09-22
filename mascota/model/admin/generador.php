@@ -79,8 +79,13 @@ if(isset($_POST['accion'])){
         }
     }elseif($_POST['accion']=='lst_veterinarios'){
         $form = "lis_adm_veterinarios.html";
+        $veterinarios = lis_vet_gen();
         $contenido=cargar_template("forms/$form");
-	}
+        $contenido=str_replace('[lstadmveterinarios]',$veterinarios,$contenido);
+	}elseif($_POST['accion']=='newveterinario'){
+        $form = "veterinario_nuevo.html";
+        $contenido=cargar_template("forms/$form");
+    }
     echo $contenido;
 }
 
@@ -105,6 +110,35 @@ function lis_usu_gen() {
             <td>$usua[user]</td>
             <td>$usua[tip_user]</td>
             <td class=\"text-center\"><i id=\"$usua[cedula]\" class=\"bi bi-pencil-square edituser\"></i></td>
+        </tr>";
+    }
+    $lista .= "</tbody></table>";
+    return $lista; 
+}
+
+function lis_vet_gen() {
+    global $xbd;
+    $sql = "SELECT * FROM veterinarian";
+    $lista = "<table class=\"table table-hover table-sm\">
+            <thead>
+            <tr class=\"table-primary\">
+                <th class=\"text-center\">Nombre</th>
+                <th class=\"text-center\">Apellidos</th>
+                <th class=\"text-center\">Teléfono</th>
+                <th class=\"text-center\">Dirección</th>
+                <th class=\"text-center\">Licencia</th>
+                <th class=\"text-center\">Modificar</th>
+            </tr>
+            </thead><tbody>";
+    $veterinarios = mysqli_query($xbd, $sql);
+    while($vet = mysqli_fetch_assoc($veterinarios)){
+        $lista .= "<tr>
+            <td class=\"text-rigth\">$vet[name_vet]</td>
+            <td>$vet[lastname_vet]</td>
+            <td>$vet[telephone_vet]</td>
+            <td>$vet[address_vet]</td>
+            <td>$vet[professional_lic]</td>
+            <td class=\"text-center\"><i id=\"$vet[id_vet]\" class=\"bi bi-pencil-square editveterinario\"></i></td>
         </tr>";
     }
     $lista .= "</tbody></table>";

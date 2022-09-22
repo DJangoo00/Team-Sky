@@ -1,4 +1,4 @@
-<section id="lst_admusuarios">
+<section id="lst_admveterinarios">
     <div class="panel panel-success text-center">
         <div class="panel-heading text-info"><b>ADMINISTRACIÓN DE VETERINARIOS</b></div>
     </div>
@@ -8,32 +8,44 @@
             <div class="input-group-prepend">
                 <span id="inputGroup-sizing-sm" class="input-group-text">Veterinarios</span>
                 <input id="cmbqd_nompro" type="text" required class="bqdlis form-control-sm bqdprod" placeholder="Nombre">
-                <span class="input-group-text adduser" title="Crear Usuario" onclick="fn_new_usuario()"><i class="bi bi-clipboard-plus"></i></span>
-                <span class="input-group-text" title="Filtrar Usuarios" onclick="bqd_usuario()"><i width="32" height="32" class="bi bi-search"></i>
+                <span class="input-group-text adduser" title="Crear Usuario" onclick="fn_new_veterinario()"><i class="bi bi-clipboard-plus"></i></span>
+                <span class="input-group-text" title="Filtrar Veterinario" onclick="bqd_veterinario()"><i width="32" height="32" class="bi bi-search"></i>
                     </span>
             </div>
         </div>
     </div>
     <div id="lis_iteminv">
-        [lstadmusuarios]
+        [lstadmveterinarios]
     </div>
     </div>
 </section>
 <div id="dtsfrm" class="container"></div>
 <script>
-    function fn_new_usuario(){
-        $("#lst_admusuarios").hide();
-        $("#dtsfrm").load('generador.php',{accion:'newusuario'});
+    function fn_new_veterinario(){
+        $("#lst_admveterinarios").hide();
+        $("#dtsfrm").load('generador.php',{accion:'newveterinario'});
         
     }
-    function cancelarUsuario(){
-        $("#lst_admusuarios").show();
+    function cancelarVeterinario(){
+        $("#lst_admveterinarios").show();
         $("#dtsfrm").html('');
     }
-    function guardarUsuario(){
+    function guardarVeterinario(){
         var data = new Object();
         
-        $(".newuser").css('background-color','#fff');
+        $(".newvet").css('background-color','#fff');
+        if($("#name_vet").val() == '' || parseInt($("#name_vet").val().length) < 5){
+            alert("Digite los nombres");
+            $("#name_vet").css('background-color','#63F516');
+            return false;
+        }
+        data.name_vet = $("#name_vet").val();
+        if($("#lastname_vet").val() == '' || parseInt($("#lastname_vet").val().length) < 5){
+            alert("Digite los apellidos");
+            $("#lastname_vet").css('background-color','#63F516');
+            return false;
+        }
+        data.lastname_vet = $("#lastname_vet").val();
         if($("#cedula").val() <= 0){
             alert("No tiene cédula correcta");
             $("#cedula").css('background-color','#63F516');
@@ -46,12 +58,6 @@
             return false;
         }
         data.id_tip_user = $("#id_tip_user").val();
-        if($("#nombres").val() == '' || parseInt($("#nombres").val().length) < 5){
-            alert("Digite los nombres");
-            $("#nombres").css('background-color','#63F516');
-            return false;
-        }
-        data.nombres = $("#nombres").val();
         if($("#user").val() == '' || parseInt($("#user").val().length) < 5){
             alert("Digite un Usuario");
             $("#user").css('background-color','#63F516');
@@ -65,7 +71,7 @@
             return false;
         }
         data.password = $("#password").val();
-        $.post('generador.php',{accion:'ingnewuser',data}, function(res){
+        $.post('generador.php',{accion:'ingnewvet',data}, function(res){
             console.log(data);
         })
     }

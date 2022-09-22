@@ -1,0 +1,45 @@
+<div class="card" >
+    <div class="card-header">
+        <div class="panel panel-success text-center">
+            <div class="panel-heading text-info"><b>CREACION DE VETERINARIO:</b></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="name_vet" class="col-sm-2 col-form-label"><b>Nombres:</b></label>
+            <div class="col-sm-4">
+                <input id="name_vet" class="form-control newvet" type="text">
+            </div>
+            <label for="lastname_vet" class="col-sm-2 col-form-label"><b>Apellidos:</b></label>
+            <div class="col-sm-4">
+                <input id="lastname_vet" class="form-control newvet" type="text">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="telephone_vet" class="col-sm-2 col-form-label"><b>Teléfono:</b></label>
+            <div class="col-sm-3">
+                <input id="telephone_vet" class="form-control newvet" type="number">
+            </div>
+            <label for="professional_lic" class="col-sm-2 col-form-label"><b>Licencia:</b></label>
+            <div class="col-sm-3">                
+                <input id="professional_lic" class="form-control newvet" type="number">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="address_vet" class="col-sm-2 col-form-label"><b>Dirección:</b></label>
+            <div class="col-sm-6">
+                <input id="address_vet" class="form-control newvet" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-4 text-center">
+                <button class="btn btn-success" onclick="guardarVeterinario()">Crear</button>
+            </div>
+            <div class="col-sm-2 text-center">
+                <button class="btn btn-primary" onclick="cancelarVeterinario()">Cancelar</button>
+            </div>            
+        </div>
+    </div>
+</div>
