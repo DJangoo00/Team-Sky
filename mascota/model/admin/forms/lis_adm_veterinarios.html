@@ -46,24 +46,24 @@
             return false;
         }
         data.lastname_vet = $("#lastname_vet").val();
-        if($("#cedula").val() <= 0){
-            alert("No tiene cédula correcta");
-            $("#cedula").css('background-color','#63F516');
+        if($("#telephone_vet").val() <= 0 || parseInt($("#telephone_vet").val().length) < 10){
+            alert("Numero telefonico incorrecto, su numero debe tener minimo 10 digitos");
+            $("#telephone_vet").css('background-color','#63F516');
             return false;
         }
-        data.cedula = $("#cedula").val();
-        if($("#id_tip_user").val() == '--'){
-            alert("Seleccione un Tipo de Usuario");
-            $("#id_tip_user").css('background-color','#63F516');
+        data.telephone_vet = $("#telephone_vet").val();
+        if($("#professional_lic").val() <= 0 || (parseInt($("#professional_lic").val().length) < 8 || parseInt($("#professional_lic").val().length) > 10)){
+            alert("Licencia incorrecta, debe contener de 8 a 10 digitos");
+            $("#professional_lic").css('background-color','#63F516');
             return false;
         }
-        data.id_tip_user = $("#id_tip_user").val();
-        if($("#user").val() == '' || parseInt($("#user").val().length) < 5){
-            alert("Digite un Usuario");
-            $("#user").css('background-color','#63F516');
+        data.professional_lic = $("#professional_lic").val();
+        if($("#address_vet").val() == '' || (parseInt($("#address_vet").val().length) < 5 || parseInt($("#address_vet").val().length) > 100)){
+            alert("Direccion incorrecta, debe contener de 5 a 100 digitos ");
+            $("#address_vet").css('background-color','#63F516');
             return false;
         }
-        data.user = $("#user").val();
+        data.address_vet = $("#address_vet").val();
         if($("#password").val() == '' || ($("#password").val() != $("#cpassword").val())){
             alert("Las contraseñas no son iguales por favor revise");
             $("#password").css('background-color','#63F516');

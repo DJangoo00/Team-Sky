@@ -55,7 +55,12 @@ if(isset($_POST['btncerrar']))
         <section class="title">
             <h1><?php echo $usua['tip_user']?> | Formulario para agregar tipo de usuario</h1>
         </section>
-        <table>    
+        <table border="1" class="center">
+            <form name="frm_usuario" method="POST" autocomplete="off">
+                <tr>
+                <tr>
+                    
+                    
 
     </body>
 </html>

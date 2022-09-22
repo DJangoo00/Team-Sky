@@ -155,6 +155,8 @@ box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.51);
     grid-auto-rows: 100px;
   }
 .center {
-	display: block;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 
 }  
