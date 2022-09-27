@@ -4,10 +4,10 @@ require_once("../../db/connection.php");
 $xbd = $mysqli;
 if(isset($_POST['accion'])){
     if($_POST['accion']=='ini'){  /// Inicio de Compras
-        $form = "lis_adm_usuarios.html";
-		$usuarios = lis_usu_gen();
+        $form = "lis_mascotas.html";
+		$mascota = lis_mascotas_gen();
         $contenido=cargar_template("forms/$form");
-        $contenido=str_replace('[lstadmusuarios]',$usuarios,$contenido);
+        $contenido=str_replace('[lis_mascotas]',$mascota,$contenido);
     }elseif($_POST['accion']=='newusuario'){
         $form = "usuario_nuevo.html";
         $tipos = mysqli_query($xbd, "SELECT * FROM tip_user");
@@ -77,11 +77,11 @@ if(isset($_POST['accion'])){
         }else{
             $contenido = "No LLEGO";
         }
-    }elseif($_POST['accion']=='lst_veterinarios'){
-        $form = "lis_adm_veterinarios.html";
-        $veterinarios = lis_vet_gen();
+    }elseif($_POST['accion']=='lst_owner'){
+        $form = "lis_adm_owner.html";
+        $owner = lis_owner_gen();
         $contenido=cargar_template("forms/$form");
-        $contenido=str_replace('[lstadmveterinarios]',$veterinarios,$contenido);
+        $contenido=str_replace('[lis_adm_owner]',$owner,$contenido);
 	}elseif($_POST['accion']=='newveterinario'){
         $form = "veterinario_nuevo.html";
         $contenido=cargar_template("forms/$form");
@@ -108,36 +108,38 @@ if(isset($_POST['accion'])){
     echo $contenido;
 }
 
-function lis_usu_gen() {
+function lis_mascotas_gen() {
     global $xbd;
-    $sql = "SELECT * FROM user a INNER JOIN tip_user b ON b.id_tip_user = a.id_tip_user ";
+    $sql = "SELECT * FROM pet";
     $lista = "<table class=\"table table-hover table-sm\">
             <thead>
             <tr class=\"table-primary\">
-                <th class=\"text-center\">Cedula</th>
-                <th class=\"text-center\">Nombres</th>
-                <th class=\"text-center\">Usuario</th>
-                <th class=\"text-center\">Privilegios</th>
+                <th class=\"text-center\">Mascota</th>
+                <th class=\"text-center\">Dueño</th>
+                <th class=\"text-center\">Color</th>
+                <th class=\"text-center\">Especie</th>
+                <th class=\"text-center\">Raza</th>
                 <th class=\"text-center\">Modificar</th>
             </tr>
             </thead><tbody>";
-    $usuarios = mysqli_query($xbd, $sql);
-    while($usua = mysqli_fetch_assoc($usuarios)){
+    $mascotas = mysqli_query($xbd, $sql);
+    while($pet = mysqli_fetch_assoc($mascotas)){
         $lista .= "<tr>
-            <td class=\"text-rigth\">$usua[cedula]</td>
-            <td>$usua[nombres]</td>
-            <td>$usua[user]</td>
-            <td>$usua[tip_user]</td>
-            <td class=\"text-center\"><i id=\"$usua[cedula]\" class=\"bi bi-pencil-square edituser\"></i></td>
+            <td class=\"text-rigth\">$pet[name_pet]</td>
+            <td>$pet[name_pet]</td>
+            <td>$pet[color]</td>
+            <td>$pet[species]</td>
+            <td>$pet[breed]</td>
+            <td class=\"text-center\"><i id=\"$pet[id_pet]\" class=\"bi bi-pencil-square edituser\"></i></td>
         </tr>";
     }
     $lista .= "</tbody></table>";
     return $lista; 
 }
 
-function lis_vet_gen() {
+function lis_owner_gen() {
     global $xbd;
-    $sql = "SELECT * FROM veterinarian";
+    $sql = "SELECT * FROM owner";
     $lista = "<table class=\"table table-hover table-sm\">
             <thead>
             <tr class=\"table-primary\">
@@ -145,19 +147,19 @@ function lis_vet_gen() {
                 <th class=\"text-center\">Apellidos</th>
                 <th class=\"text-center\">Teléfono</th>
                 <th class=\"text-center\">Dirección</th>
-                <th class=\"text-center\">Licencia</th>
+                <th class=\"text-center\">Correo</th>
                 <th class=\"text-center\">Modificar</th>
             </tr>
             </thead><tbody>";
-    $veterinarios = mysqli_query($xbd, $sql);
-    while($vet = mysqli_fetch_assoc($veterinarios)){
+    $owners = mysqli_query($xbd, $sql);
+    while($owner = mysqli_fetch_assoc($owners)){
         $lista .= "<tr>
-            <td class=\"text-rigth\">$vet[name_vet]</td>
-            <td>$vet[lastname_vet]</td>
-            <td>$vet[telephone_vet]</td>
-            <td>$vet[address_vet]</td>
-            <td>$vet[professional_lic]</td>
-            <td class=\"text-center\"><i id=\"$vet[id_vet]\" class=\"bi bi-pencil-square editveterinario\"></i></td>
+            <td class=\"text-rigth\">$owner[name]</td>
+            <td>$owner[lastname]</td>
+            <td>$owner[telephone]</td>
+            <td>$owner[address]</td>
+            <td>$owner[email]</td>
+            <td class=\"text-center\"><i id=\"$owner[id_owner]\" class=\"bi bi-pencil-square editowner\"></i></td>
         </tr>";
     }
     $lista .= "</tbody></table>";

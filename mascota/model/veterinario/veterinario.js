@@ -4,7 +4,7 @@ function acc_mod(acc){  //  Acciones del Modulo
 	if(acc=='ini'){   		
 		$("#estructura").load('generador.php',{accion:accion});
 	}
-	if(acc=='lst_veterinarios'){   		
+	if(acc=='lst_owner'){   		
 		$("#estructura").load('generador.php',{accion:accion});
 	}
 	if(acc=='Cerrar'){   		
