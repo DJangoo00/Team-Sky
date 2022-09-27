@@ -85,6 +85,22 @@ if(isset($_POST['accion'])){
 	}elseif($_POST['accion']=='newveterinario'){
         $form = "veterinario_nuevo.html";
         $contenido=cargar_template("forms/$form");
+    }elseif($_POST['accion']=='ingnewvet'){
+        if(isset($_POST["data"])){
+            $validar = mysqli_query($xbd, "SELECT professional_lic FROM veterinarian WHERE professional_lic = '".$_POST["data"]["professional_lic"]."'");
+            if(mysqli_num_rows ($validar)>0){
+                $contenido = 1;
+            }else{
+                $insertar = mysqli_query($xbd, "INSERT INTO veterinarian(name_vet,lastname_vet,telephone_vet,address_vet,professional_lic) VALUES('".$_POST["data"]["name_vet"]."','".$_POST["data"]["lastname_vet"]."','".$_POST["data"]["telephone_vet"]."','".$_POST["data"]["address_vet"]."','".$_POST["data"]["professional_lic"]."')");
+                if($insertar){
+                    $contenido = 2;
+                }else{
+                    $contenido = 3;
+                }
+            }
+        }else{
+            $contenido = "No LLEGO";
+        }
     }
     echo $contenido;
 }

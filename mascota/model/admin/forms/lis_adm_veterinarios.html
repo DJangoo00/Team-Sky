@@ -64,15 +64,17 @@
             return false;
         }
         data.address_vet = $("#address_vet").val();
-        if($("#password").val() == '' || ($("#password").val() != $("#cpassword").val())){
-            alert("Las contraseñas no son iguales por favor revise");
-            $("#password").css('background-color','#63F516');
-            $("#cpassword").css('background-color','#63F516');
-            return false;
-        }
-        data.password = $("#password").val();
+       
         $.post('generador.php',{accion:'ingnewvet',data}, function(res){
-            console.log(data);
+            if(res == 1){
+                alert("El veterinario ya existe");
+            }else if(res == 2){
+                alert("Se creo el veterinario");
+                acc_mod('lst_veterinarios');
+            }else if(res == 3){
+                alert("No se creo el veterinario");
+                acc_mod('lst_veterinarios');
+            }
         })
     }
 </script>
