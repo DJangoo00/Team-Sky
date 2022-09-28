@@ -1,0 +1,73 @@
+<section id="lis_adm_visit">
+    <div class="panel panel-success text-center">
+        <div class="panel-heading text-info"><b>LISTA DE VISITAS</b></div>
+    </div>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <span id="inputGroup-sizing-sm" class="input-group-text">Mascota</span>
+                <input id="cmbqd_nompro" type="text" required class="bqdlis form-control-sm bqdprod" placeholder="Nombre">
+                <span class="input-group-text adduser" title="Crear Mascota" onclick="fn_new_visit()"><i class="bi bi-clipboard-plus"></i></span>
+                <span class="input-group-text" title="Filtrar Mascota" onclick="bqd_mascota()"><i width="32" height="32" class="bi bi-search"></i>
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div id="lis_iteminv">
+        [lis_visitas_gen]
+    </div>
+    </div>
+</section>
+<div id="dtsfrm" class="container"></div>
+<script>
+
+    function fn_new_visit(){
+        $("#lis_adm_visit").hide();
+        $("#dtsfrm").load('generador.php',{accion:'newvisit'});        
+    }
+    function cancelarVisit(){
+        $("#lis_adm_visit").show();
+        $("#dtsfrm").html('');
+    }
+    function fn_add_medicines(){
+        $(".vermed").show();
+    }
+    let medicinas = []
+    function fn_add_medicamentos(){
+        var data = new Object();
+        $(".vermed").css('background-color','#fff');
+        if($("#id_medicine").val() == '--' ){
+            alert("Debe selecciona una medicina");
+            $("#id_medicine").css('background-color','#CCCFFF');
+            return false;
+        }
+        data.id_medicine = $("#id_medicine").val();
+        data.name_medicine = $("#id_medicine option:selected").text();
+        if($("#medicine_dosage").val() == '' || parseInt($("#medicine_dosage").val().length) > 60){
+            alert("Debe escribir la dosis que no pase de 60 digitos");
+            $("#medicine_dosage").css('background-color','#CCCFFF');
+            return false;
+        }
+        data.medicine_dosage = $("#medicine_dosage").val();
+        if($("#amount").val() == '' || $("#amount").val() < 0 ){
+            alert("Debe digitar la cantidad");
+            $("#amount").css('background-color','#CCCFFF');
+            return false;
+        }
+        data.amount = $("#amount").val();
+        medicinas.push(data);
+        console.log(medicinas);
+        let table = "<h5 class=\"text-center text-danger\">Lista de Medicamentos</h5><table class=\"table table-hover\"><thead><tr><th>id Medicina</th><th>Nombre</th><th>Dosis</th><th>Cantidad</th><th>Retirar</th></thead><tbody>";
+        $.each(medicinas , function( index, obj ) {     
+            table += "<tr>";                     
+            $.each(obj, function( key, value ) { 
+                console.log('¡Hola :'+key+'!'+value);
+                table += '<td><input id="'+key+'" value="'+value+'" class="form-control"></td>';
+            }); 
+            table += '<td><i class="bi bi-trash3-fill"></i></td></tr>'; 
+          }); 
+          table += "</tbody></table>"; 
+          $("#lista_medicamentos").html(table);
+    }
+</script>

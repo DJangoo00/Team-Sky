@@ -3,20 +3,14 @@ header("Content-Type: text/html;charset=utf-8");
 require_once("../../db/connection.php");
 $xbd = $mysqli;
 if(isset($_POST['accion'])){
-    if($_POST['accion']=='ini'){  /// Inicio de Compras
+    if($_POST['accion']=='ini'){  /// 
         $form = "lis_mascotas.html";
 		$mascota = lis_mascotas_gen();
         $contenido=cargar_template("forms/$form");
         $contenido=str_replace('[lis_mascotas]',$mascota,$contenido);
-    }elseif($_POST['accion']=='newusuario'){
-        $form = "usuario_nuevo.html";
-        $tipos = mysqli_query($xbd, "SELECT * FROM tip_user");
-        $option = "<option value=\"--\">--</option>";
-        while($opciones = mysqli_fetch_assoc($tipos)){
-            $option .= "<option value=\"$opciones[id_tip_user]\">$opciones[tip_user]</option>";
-        }
+    }elseif($_POST['accion']=='newowner'){
+        $form = "owner_nuevo.html";
         $contenido=cargar_template("forms/$form");
-        $contenido=str_replace('[tipos]',$option,$contenido);
     }elseif($_POST['accion']=='ingnewuser'){
         if(isset($_POST["data"])){
             $cedula = $_POST["data"]["cedula"];
@@ -85,13 +79,13 @@ if(isset($_POST['accion'])){
 	}elseif($_POST['accion']=='newveterinario'){
         $form = "veterinario_nuevo.html";
         $contenido=cargar_template("forms/$form");
-    }elseif($_POST['accion']=='ingnewvet'){
+    }elseif($_POST['accion']=='ingnewown'){
         if(isset($_POST["data"])){
-            $validar = mysqli_query($xbd, "SELECT professional_lic FROM veterinarian WHERE professional_lic = '".$_POST["data"]["professional_lic"]."'");
+            $validar = mysqli_query($xbd, "SELECT id_owner FROM owner WHERE id_owner = '".$_POST["data"]["id_owner"]."'");
             if(mysqli_num_rows ($validar)>0){
                 $contenido = 1;
             }else{
-                $insertar = mysqli_query($xbd, "INSERT INTO veterinarian(name_vet,lastname_vet,telephone_vet,address_vet,professional_lic) VALUES('".$_POST["data"]["name_vet"]."','".$_POST["data"]["lastname_vet"]."','".$_POST["data"]["telephone_vet"]."','".$_POST["data"]["address_vet"]."','".$_POST["data"]["professional_lic"]."')");
+                $insertar = mysqli_query($xbd, "INSERT INTO owner(id_owner,name,lastname,telephone,address,email) VALUES('".$_POST["data"]["id_owner"]."','".$_POST["data"]["name"]."','".$_POST["data"]["lastname"]."','".$_POST["data"]["telephone"]."','".$_POST["data"]["address"]."','".$_POST["data"]["email"]."')");
                 if($insertar){
                     $contenido = 2;
                 }else{
@@ -101,6 +95,32 @@ if(isset($_POST['accion'])){
         }else{
             $contenido = "No LLEGO";
         }
+    }elseif($_POST['accion']=='lst_visitas'){
+        $form = "lis_adm_visitas.html";
+        $visitas = lis_visitas_gen();
+        $contenido=cargar_template("forms/$form");
+        $contenido=str_replace('[lis_visitas_gen]',$visitas,$contenido);
+	}elseif($_POST['accion']=='newvisit'){
+        $form = "visita_nueva.html";
+        $veterinarios = mysqli_query($xbd, "SELECT * FROM veterinarian");
+        $veter = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($veterinarios)){
+            $veter .= "<option value=\"$opciones[id_vet]\">$opciones[name_vet] $opciones[lastname_vet]</option>";
+        }
+        $pets = mysqli_query($xbd, "SELECT * FROM pet");
+        $option = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($pets)){
+            $option .= "<option value=\"$opciones[id_pet]\">$opciones[name_pet] -- $opciones[breed]</option>";
+        }
+        $medicinas = mysqli_query($xbd, "SELECT * FROM medicines");
+        $medic = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($medicinas)){
+            $medic .= "<option value=\"$opciones[id_medicine]\">$opciones[medicine_name] -- $opciones[type]</option>";
+        }
+        $contenido=cargar_template("forms/$form");
+        $contenido=str_replace('[lista_veterinarios]',$veter,$contenido);
+        $contenido=str_replace('[lista_mascotas]',$option,$contenido);
+        $contenido=str_replace('[lista_medicinas]',$medic,$contenido);
     }elseif($_POST['accion']=='Cerrar'){
         session_destroy();
         header('location: ../../index.html');
@@ -143,6 +163,7 @@ function lis_owner_gen() {
     $lista = "<table class=\"table table-hover table-sm\">
             <thead>
             <tr class=\"table-primary\">
+                <th class=\"text-center\">Identificación</th>
                 <th class=\"text-center\">Nombre</th>
                 <th class=\"text-center\">Apellidos</th>
                 <th class=\"text-center\">Teléfono</th>
@@ -154,12 +175,48 @@ function lis_owner_gen() {
     $owners = mysqli_query($xbd, $sql);
     while($owner = mysqli_fetch_assoc($owners)){
         $lista .= "<tr>
-            <td class=\"text-rigth\">$owner[name]</td>
+            <td class=\"text-rigth\">$owner[id_owner]</td>
+            <td>$owner[name]</td>
             <td>$owner[lastname]</td>
             <td>$owner[telephone]</td>
             <td>$owner[address]</td>
             <td>$owner[email]</td>
             <td class=\"text-center\"><i id=\"$owner[id_owner]\" class=\"bi bi-pencil-square editowner\"></i></td>
+        </tr>";
+    }
+    $lista .= "</tbody></table>";
+    return $lista; 
+}
+function lis_visitas_gen() {
+    global $xbd;
+    $sql = "SELECT vv.id_visit,vv.visit_date,CONCAT(v.name_vet,' ',v.lastname_vet) nombreVeterinario, p.name_pet, vv.temperature, vv.weight, 
+                vv.breathing_freq
+            FROM vet_visit vv INNER JOIN veterinarian v ON v.id_vet=vv.id_vet
+            INNER JOIN pet p ON p.id_pet = vv.id_pet";
+    $lista = "<table class=\"table table-hover table-sm\">
+            <thead>
+            <tr class=\"table-primary\">
+                <th class=\"text-center\">No. Visita</th>
+                <th class=\"text-center\">Fecha</th>
+                <th class=\"text-center\">Nombre Veterinario</th>
+                <th class=\"text-center\">Mascota</th>
+                <th class=\"text-center\">Temp °</th>
+                <th class=\"text-center\">Peso</th>
+                <th class=\"text-center\">FC</th>
+                <th class=\"text-center\">Modificar</th>
+            </tr>
+            </thead><tbody>";
+    $visitas = mysqli_query($xbd, $sql);
+    while($visita = mysqli_fetch_assoc($visitas)){
+        $lista .= "<tr>
+            <td class=\"text-rigth\">$visita[id_visit]</td>
+            <td>$visita[visit_date]</td>
+            <td>$visita[nombreVeterinario]</td>
+            <td>$visita[name_pet]</td>
+            <td>$visita[temperature] °</td>
+            <td>$visita[weight] Kg.</td>
+            <td>$visita[breathing_freq] l/m</td>
+            <td class=\"text-center\"><i id=\"$visita[id_visit]\" class=\"bi bi-pencil-square editowner\"></i></td>
         </tr>";
     }
     $lista .= "</tbody></table>";

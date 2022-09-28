@@ -1,0 +1,82 @@
+<div class="card" >
+    <div class="card-header">
+        <div class="panel panel-success text-center">
+            <div class="panel-heading text-info"><b>CREACION DE VISITA:</b></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="id_vet" class="col-sm-2 col-form-label"><b>Veterinario:</b></label>
+            <div class="col-sm-4">
+                <select id="id_vet" class="form-control">[lista_veterinarios]</select>
+            </div>
+            <label for="id_pet" class="col-sm-2 col-form-label"><b>Mascota:</b></label>
+            <div class="col-sm-4">
+                <select id="id_pet" class="form-control">[lista_mascotas]</select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="visit_date" class="col-sm-2 col-form-label"><b>Fecha:</b></label>
+            <div class="col-sm-2">
+                <input id="visit_date" class="form-control newvet" type="date">
+            </div>
+            <label for="temperature" class="col-sm-2 col-form-label"><b>Temperatura:</b></label>
+            <div class="col-sm-2">
+                <input id="temperature" class="form-control newvet" type="number">
+            </div>
+            <label for="weight" class="col-sm-2 col-form-label"><b>Peso (Kg):</b></label>
+            <div class="col-sm-2">
+                <input id="weight" class="form-control newvet" type="number">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="breathing_freq" class="col-sm-3 col-form-label"><b>Frecuencia Respiratoria:</b></label>
+            <div class="col-sm-2">
+                <input id="breathing_freq" class="form-control newvet" type="number">
+            </div>
+            <label for="breathing_freq" class="col-sm-3 col-form-label"><b>Frecuencia Cardiaca:</b></label>
+            <div class="col-sm-2">
+                <input id="breathing_freq" class="form-control newvet" type="number">
+            </div>            
+        </div>
+        <div class="form-group row">
+            <label for="breathing_freq" class="col-sm-3 col-form-label"><b>Recomendaciones:</b></label>
+            <div class="col-sm-8">
+                <textarea id="recommendations" class="form-control" rows="5"></textarea>
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-sm btn-primary" onclick="fn_add_medicines()">Formular</button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_medicine" class="col-sm-2 col-form-label vermed collapse"><b>Medicamento:</b></label>
+            <div class="col-sm-3">
+                <select id="id_medicine" class="form-control vermed collapse">[lista_medicinas]</select>
+            </div>
+            <label for="medicine_dosage" class="col-sm-1 col-form-label vermed collapse"><b>Dosis:</b></label>
+            <div class="col-sm-2">
+                <input id="medicine_dosage" class="form-control vermed collapse" type="text">
+            </div>
+            <label for="amount" class="col-sm-2 col-form-label vermed collapse"><b>Cantidad:</b></label>
+            <div class="col-sm-1">
+                <input id="amount" class="form-control vermed collapse" type="number">
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-sm btn-success vermed collapse" onclick="fn_add_medicamentos()"><i class="bi bi-bag-plus-fill"></i></button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div id="lista_medicamentos" class="col-sm-12"></div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-4 text-center">
+                <button class="btn btn-success" onclick="guardarVeterinario()">Crear</button>
+            </div>
+            <div class="col-sm-2 text-center">
+                <button class="btn btn-primary" onclick="cancelarVeterinario()">Cancelar</button>
+            </div>            
+        </div>
+    </div>
+</div>

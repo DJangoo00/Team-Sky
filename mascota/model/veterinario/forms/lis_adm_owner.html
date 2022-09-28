@@ -20,3 +20,67 @@
     </div>
 </section>
 <div id="dtsfrm" class="container"></div>
+<script>
+    function fn_new_owner(){
+        $("#lis_ad_owner").hide();
+        $("#dtsfrm").load('generador.php',{accion:'newowner'});        
+    }
+    function cancelarOwner(){
+        $("#lis_ad_owner").show();
+        $("#dtsfrm").html('');
+    }
+    function guardarOwner(){
+        var data = new Object();
+        $(".newvet").css('background-color','#fff');
+        if($("#id_owner").val() <= 0 || (parseInt($("#id_owner").val().length) < 8 || parseInt($("#id_owner").val().length) > 12)){
+            alert("La identificación es incorrecta, su numero debe contener de 8 a 12 digitos");
+            $("#id_owner").css('background-color','#63F516');
+            return false;
+        }
+        data.id_owner = $("#id_owner").val();
+
+        if($("#name").val() == '' || parseInt($("#name").val().length) < 5){
+            alert("Digite los nombres");
+            $("#name").css('background-color','#63F516');
+            return false;
+        }
+        data.name = $("#name").val();
+        if($("#lastname").val() == '' || parseInt($("#lastname").val().length) < 5){
+            alert("Digite los apellidos");
+            $("#lastname").css('background-color','#63F516');
+            return false;
+        }
+        data.lastname = $("#lastname").val();
+        if($("#telephone").val() <= 0 || parseInt($("#telephone").val().length) < 10){
+            alert("Numero telefonico incorrecto, su numero debe tener minimo 10 digitos");
+            $("#telephone").css('background-color','#63F516');
+            return false;
+        }
+        data.telephone = $("#telephone").val();
+        var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+        if (!regex.test($('#email').val().trim())) {
+            alert('Correo invalido por favor verifique');
+            $("#email").css('background-color','#63F516');
+            return false;
+        }
+        data.email = $("#email").val();
+        if($("#address").val() == '' || (parseInt($("#address").val().length) < 5 || parseInt($("#address").val().length) > 100)){
+            alert("Direccion incorrecta, debe contener de 5 a 100 digitos ");
+            $("#address").css('background-color','#63F516');
+            return false;
+        }
+        data.address = $("#address").val();
+       
+        $.post('generador.php',{accion:'ingnewown',data}, function(res){
+            if(res == 1){
+                alert("El Dueño ya existe");
+            }else if(res == 2){
+                alert("Se creo el Dueño");
+                acc_mod('lst_owner');
+            }else if(res == 3){
+                alert("No se creo el Dueño");
+                acc_mod('lst_owner');
+            }
+        })
+    }
+</script>
