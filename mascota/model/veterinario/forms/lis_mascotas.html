@@ -23,51 +23,52 @@
 <script>
     function fn_new_mascota(){
         $("#lis_mascotas").hide();
-        $("#dtsfrm").load('generador.php',{accion:'newusuario'});
+        $("#dtsfrm").load('generador.php',{accion:'newmascota'});
         
     }
-    function cancelarUsuario(){
+    function cancelarMascota(){
         $("#lis_mascotas").show();
         $("#dtsfrm").html('');
     }
-    function guardarUsuario(){
+    function guardarMascota(){
         var data = new Object();        
-        $(".newuser").css('background-color','#fff');
-        if($("#cedula").val() <= 0){
-            alert("No tiene cédula correcta");
-            $("#cedula").css('background-color','#63F516');
+        $(".newvet").css('background-color','#fff');
+        if($("#id_owner").val() == '--'){
+            alert("No ha seleccionado el dueño");
+            $("#id_owner").css('background-color','#63F516');
             return false;
         }
-        data.cedula = $("#cedula").val();
-        if($("#id_tip_user").val() == '--'){
-            alert("Seleccione un Tipo de Usuario");
-            $("#id_tip_user").css('background-color','#63F516');
+        data.id_owner = $("#id_owner").val();
+
+        if($("#name_pet").val() == '' || parseInt($("#name_pet").val().length) < 3){
+            alert("Digite el nombre de la mascota");
+            $("#name_pet").css('background-color','#63F516');
             return false;
         }
-        data.id_tip_user = $("#id_tip_user").val();
-        if($("#nombres").val() == '' || parseInt($("#nombres").val().length) < 5){
-            alert("Digite los nombres");
-            $("#nombres").css('background-color','#63F516');
+        data.name_pet = $("#name_pet").val();
+        
+        if($("#color").val() == '' || parseInt($("#color").val().length) < 4){
+            alert("Digite el Color de la Mascota");
+            $("#color").css('background-color','#63F516');
             return false;
         }
-        data.nombres = $("#nombres").val();
-        if($("#user").val() == '' || parseInt($("#user").val().length) < 5){
-            alert("Digite un Usuario");
-            $("#user").css('background-color','#63F516');
+        data.color = $("#color").val();
+
+        if($("#species").val() == '' || parseInt($("#species").val().length) < 3){
+            alert("Digite la especie de la Mascota");
+            $("#species").css('background-color','#63F516');
             return false;
         }
-        data.user = $("#user").val();
-        if($("#password").val() == '' || ($("#password").val() != $("#cpassword").val())){
-            alert("Las contraseñas no son iguales por favor revise");
-            $("#password").css('background-color','#63F516');
-            $("#cpassword").css('background-color','#63F516');
+        data.species = $("#species").val();
+
+        if($("#breed").val() == '' || parseInt($("#breed").val().length) < 3){
+            alert("Digite la raza de la Mascota");
+            $("#breed").css('background-color','#63F516');
             return false;
         }
-        if($("#password").val().length <8){
-            alert("La contraseña no tiene 8 carateres minimo.")
-            return false;
-        }
-        data.password = $("#password").val();
+        data.breed = $("#breed").val();
+
+
         $.post('generador.php',{accion:'ingnewuser',data}, function(res){
             if(res == 1){
                 alert("La cedula o el usuario ya existen");

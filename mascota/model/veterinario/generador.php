@@ -121,6 +121,15 @@ if(isset($_POST['accion'])){
         $contenido=str_replace('[lista_veterinarios]',$veter,$contenido);
         $contenido=str_replace('[lista_mascotas]',$option,$contenido);
         $contenido=str_replace('[lista_medicinas]',$medic,$contenido);
+    }elseif($_POST['accion']=='newmascota'){
+        $form = "mascota_nuevo.html";
+        $owners = mysqli_query($xbd, "SELECT * FROM owner");
+        $option = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($owners)){
+            $option .= "<option value=\"$opciones[id_owner]\">$opciones[name] $opciones[lastname]</option>";
+        }
+        $contenido=cargar_template("forms/$form");
+        $contenido=str_replace('[lst_owners]',$option,$contenido);
     }elseif($_POST['accion']=='Cerrar'){
         session_destroy();
         header('location: ../../index.html');

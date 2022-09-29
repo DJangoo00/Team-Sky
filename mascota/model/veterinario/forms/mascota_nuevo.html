@@ -1,0 +1,46 @@
+<div class="card" >
+    <div class="card-header">
+        <div class="panel panel-success text-center">
+            <div class="panel-heading text-info"><b>CREACION DE MASCOTA:</b></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-group row">
+            <label for="id_owner" class="col-sm-2 col-form-label"><b>Dueño:</b></label>
+            <div class="col-sm-8">
+                <select id="id_owner" class="form-control newvet">[lst_owners]</select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name_pet" class="col-sm-2 col-form-label"><b>Nombre Mascota:</b></label>
+            <div class="col-sm-4">
+                <input id="name_pet" class="form-control newvet" type="text">
+            </div>
+            <label for="color" class="col-sm-2 col-form-label"><b>Color:</b></label>
+            <div class="col-sm-4">
+                <input id="color" class="form-control newvet" type="text">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="species" class="col-sm-2 col-form-label"><b>Especie:</b></label>
+            <div class="col-sm-3">
+                <input id="species" class="form-control newvet" type="text">
+            </div>
+            <label for="breed" class="col-sm-2 col-form-label"><b>Raza:</b></label>
+            <div class="col-sm-3">                
+                <input id="breed" class="form-control newvet" type="text">
+            </div>
+        </div>
+        
+    </div>
+    <div class="card-footer">
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-4 text-center">
+                <button class="btn btn-success" onclick="guardarMascota()">Crear</button>
+            </div>
+            <div class="col-sm-2 text-center">
+                <button class="btn btn-primary" onclick="cancelarMascota()">Cancelar</button>
+            </div>            
+        </div>
+    </div>
+</div>
