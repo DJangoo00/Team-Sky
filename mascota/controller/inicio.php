@@ -28,7 +28,7 @@ if($_POST["inicio"]){
 		}
 		/// si es un veterinario
 		elseif($_SESSION['tipo'] == 2){
-			header("Location: ../model/veterinario/index1.php"); 
+			header("Location: ../model/veterinario/index.php"); 
 			exit();		
 		}
 		/// si es un usuario
