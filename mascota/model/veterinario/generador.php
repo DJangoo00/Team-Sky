@@ -75,6 +75,56 @@ if(isset($_POST['accion'])){
         }else{
             $contenido = "No LLEGO";
         }
+    }elseif($_POST['accion']=='ver_visita'){
+        $form = "visita_consulta.html";
+        $contenido=cargar_template("forms/$form");
+        $visita = mysqli_query($xbd, "SELECT * FROM vet_visit WHERE id_visit = '$_POST[id]'");
+        if(mysqli_num_rows ($visita)>0){
+            $datos = mysqli_fetch_assoc($visita);
+            $contenido=str_replace('[temperature]',$datos["temperature"],$contenido);
+            $contenido=str_replace('[visit_date]',$datos["visit_date"],$contenido);
+            $contenido=str_replace('[weight]',$datos["weight"],$contenido);
+            $contenido=str_replace('[breathing_freq]',$datos["breathing_freq"],$contenido);
+            $contenido=str_replace('[heart_rate]',$datos["heart_rate"],$contenido);
+            $contenido=str_replace('[recommendations]',$datos["recommendations"],$contenido);
+        }
+        $veterinarios = mysqli_query($xbd, "SELECT * FROM veterinarian");
+        $option = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($veterinarios)){
+            if(isset($datos["id_vet"]) && $datos["id_vet"] == $opciones["id_vet"] ){
+                $option .= "<option value=\"$opciones[id_vet]\" selected >$opciones[name_vet] $opciones[lastname_vet]</option>";
+            }else{
+                $option .= "<option value=\"$opciones[id_vet]\">$opciones[name_vet] $opciones[lastname_vet]</option>";
+            }            
+        }
+        $contenido=str_replace('[lista_veterinarios]',$option,$contenido);
+        $pets = mysqli_query($xbd, "SELECT * FROM pet");
+        $optionp = "<option value=\"--\">--</option>";
+        while($opciones = mysqli_fetch_assoc($pets)){
+            if(isset($datos["id_pet"]) && $datos["id_pet"] == $opciones["id_pet"] ){
+                $optionp .= "<option value=\"$opciones[id_pet]\" selected >$opciones[name_pet] $opciones[breed]</option>";
+            }else{
+                $optionp .= "<option value=\"$opciones[id_pet]\">$opciones[name_pet] -- $opciones[breed]</option>";
+            }
+        }
+        $contenido=str_replace('[lista_mascotas]',$optionp,$contenido);
+        $tablamedicamentos = "";
+        $medicamentos = mysqli_query($xbd, "SELECT * FROM visit_prescription vp INNER JOIN medicines m ON vp.id_medicine = m.id_medicine WHERE vp.id_visit = '$_POST[id]'");
+        if(mysqli_num_rows ($medicamentos)>0){
+            $tablamedicamentos = "<h5 class=\"text-center text-danger\">Lista de Medicamentos</h5><table class=\"table table-sm table-striped table-bordered\" style=\"width:100%\"><thead><tr><th class=\"text-center\" width=\"5%\">Itém</th><th class=\"text-center\" width=\"45%\">Nombre</th><th width=\"35%\">Dosis</th><th width=\"15%\">Cantidad</th></thead><tbody>";
+            $item = 1;
+            while($medicine = mysqli_fetch_assoc($medicamentos)){
+                $tablamedicamentos .= "<tr>
+                    <td class=\"text-center\"> $item</td>
+                    <td><input id=\"$medicine[id_medicine]\" value=\"$medicine[medicine_name]\" class=\"form-control\" disabled></td>
+                    <td><input value=\"$medicine[medicine_dosage]\" class=\"form-control\" disabled></td>
+                    <td><input value=\"$medicine[amount]\" class=\"form-control text-center\" disabled></td>
+                </tr>";
+                $item++;
+            }
+            $tablamedicamentos .= "</tbody></table>";
+        }
+        $contenido=str_replace('[lista_medicamentos]',$tablamedicamentos,$contenido);
     }elseif($_POST['accion']=='newmascota'){
         $form = "mascota_nuevo.html";
         $owners = mysqli_query($xbd, "SELECT * FROM owner");
@@ -183,7 +233,7 @@ function lis_visitas_gen() {
                 <th class=\"text-center\">Temp °</th>
                 <th class=\"text-center\">Peso</th>
                 <th class=\"text-center\">FC</th>
-                <th class=\"text-center\">Modificar</th>
+                <th class=\"text-center\">Ver</th>
             </tr>
             </thead><tbody>";
     $visitas = mysqli_query($xbd, $sql);
@@ -196,7 +246,7 @@ function lis_visitas_gen() {
             <td>$visita[temperature] °</td>
             <td>$visita[weight] Kg.</td>
             <td>$visita[breathing_freq] l/m</td>
-            <td class=\"text-center\"><i id=\"$visita[id_visit]\" class=\"bi bi-pencil-square editowner\"></i></td>
+            <td class=\"text-center\"><i id=\"$visita[id_visit]\" class=\"bi bi-pencil-square viewvisit\"></i></td>
         </tr>";
     }
     $lista .= "</tbody></table>";

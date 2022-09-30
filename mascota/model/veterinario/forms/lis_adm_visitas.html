@@ -166,5 +166,9 @@
             $(this).closest('tr').remove();
         }
     }));
+    $(document).off('click', '.viewvisit').on('click', '.viewvisit', (function(e) {
+        $("#lis_adm_visit").hide();
+        $("#dtsfrm").load('generador.php',{accion:'ver_visita',id:this.id});    
+	}));
     function esFecha(strFc){ var ff = strFc.split("-"); var y = ff[0]; var m = ff[1]; var d = ff[2]; return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate(); }
 </script>
