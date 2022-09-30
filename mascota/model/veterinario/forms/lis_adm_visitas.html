@@ -41,7 +41,7 @@
         console.log(medicinas);
         //if(medicinas.length <= 0) {
             $.each(medicinas , function( index, obj ) {
-                $.each(obj, function( key, value ) {
+                $.each(obj.detalle, function( key, value ) {
                     if(key=='id_medicine' && value == $("#id_medicine").val()){
                         alert("La medicina "+$("#id_medicine option:selected").text()+ " ya esta formulada.")
                         valmed = false;
@@ -93,6 +93,73 @@
         $(".vermed").hide();
         $("#btn-formular").show();
     }
+    function guardarVisita(){
+        var data = new Object();        
+        $(".newvisit").css('background-color','#fff');
+        if($("#id_vet").val() == '--'){
+            alert("Seleccione un Veterinario");
+            $("#id_vet").css('background-color','#63F516');
+            return false;
+        }
+        data.id_vet = $("#id_vet").val();
+
+        if($("#id_pet").val() == '--'){
+            alert("Seleccione una Mascota");
+            $("#id_pet").css('background-color','#63F516');
+            return false;
+        }
+        data.id_pet = $("#id_pet").val();
+        
+        if($("#visit_date").val() == "" && !esFecha($("#visit_date").val())){
+            alert("Debe Digitar una Fecha Valida ");
+            $("#visit_date").css('background-color','#63F516');
+            return false;
+        }
+        data.visit_date = $("#visit_date").val();
+        
+        if($("#temperature").val() <= 0){
+            alert("Debe Digitar una temperatura ");
+            $("#temperature").css('background-color','#63F516');
+            return false;
+        }
+        data.temperature = $("#temperature").val();
+        
+        if($("#weight").val() <= 0){
+            alert("Debe Digitar el Peso de la Mascota");
+            $("#weight").css('background-color','#63F516');
+            return false;
+        }
+        data.weight = $("#weight").val();
+        
+        if($("#breathing_freq").val() <= 0){
+            alert("Debe Digitar Frecuencia Cardiaca");
+            $("#breathing_freq").css('background-color','#63F516');
+            return false;
+        }
+        data.breathing_freq = $("#breathing_freq").val();
+        
+        if($("#heart_rate").val() <= 0){
+            alert("Debe Digitar Frecuencia Cardiaca");
+            $("#heart_rate").css('background-color','#63F516');
+            return false;
+        }
+        data.heart_rate = $("#heart_rate").val();
+        
+        data.recommendations = $("#recommendations").val();
+        data.medicine = medicinas;
+        console.log(data)
+        $.post('generador.php',{accion:'ingnewvisit',data}, function(res){
+            if(res == 1){
+                alert("La cedula o el usuario ya existen");
+            }else if(res == 2){
+                alert("Se creo el usuario");
+                acc_mod('ini');
+            }else if(res == 3){
+                alert("No se creo el usuario");
+                acc_mod('ini');
+            }
+        })
+    }
     $(document).off('click', '.delmed').on('click', '.delmed', (function(e) {
         //medicinas = medicinas.filter(item => item !== this.id)
         medicinas.splice(this.id,1);
@@ -103,4 +170,5 @@
             $(this).closest('tr').remove();
         }
     }));
+    function esFecha(strFc){ var ff = strFc.split("-"); var y = ff[0]; var m = ff[1]; var d = ff[2]; return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate(); }
 </script>

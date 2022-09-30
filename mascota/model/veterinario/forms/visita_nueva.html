@@ -8,35 +8,35 @@
         <div class="form-group row">
             <label for="id_vet" class="col-sm-2 col-form-label"><b>Veterinario:</b></label>
             <div class="col-sm-4">
-                <select id="id_vet" class="form-control">[lista_veterinarios]</select>
+                <select id="id_vet" class="form-control newvisit">[lista_veterinarios]</select>
             </div>
             <label for="id_pet" class="col-sm-2 col-form-label"><b>Mascota:</b></label>
             <div class="col-sm-4">
-                <select id="id_pet" class="form-control">[lista_mascotas]</select>
+                <select id="id_pet" class="form-control newvisit">[lista_mascotas]</select>
             </div>
         </div>
         <div class="form-group row">
             <label for="visit_date" class="col-sm-2 col-form-label"><b>Fecha:</b></label>
             <div class="col-sm-2">
-                <input id="visit_date" class="form-control newvet" type="date">
+                <input id="visit_date" class="form-control newvisit" type="date">
             </div>
             <label for="temperature" class="col-sm-2 col-form-label"><b>Temperatura:</b></label>
             <div class="col-sm-2">
-                <input id="temperature" class="form-control newvet" type="number">
+                <input id="temperature" class="form-control newvisit" type="number">
             </div>
             <label for="weight" class="col-sm-2 col-form-label"><b>Peso (Kg):</b></label>
             <div class="col-sm-2">
-                <input id="weight" class="form-control newvet" type="number">
+                <input id="weight" class="form-control newvisit" type="number">
             </div>
         </div>
         <div class="form-group row">
             <label for="breathing_freq" class="col-sm-3 col-form-label"><b>Frecuencia Respiratoria:</b></label>
             <div class="col-sm-2">
-                <input id="breathing_freq" class="form-control newvet" type="number">
+                <input id="breathing_freq" class="form-control newvisit" type="number">
             </div>
-            <label for="breathing_freq" class="col-sm-3 col-form-label"><b>Frecuencia Cardiaca:</b></label>
+            <label for="heart_rate" class="col-sm-3 col-form-label"><b>Frecuencia Cardiaca:</b></label>
             <div class="col-sm-2">
-                <input id="breathing_freq" class="form-control newvet" type="number">
+                <input id="heart_rate" class="form-control newvisit" type="number">
             </div>            
         </div>
         <div class="form-group row">
@@ -72,7 +72,7 @@
     <div class="card-footer">
         <div class="form-group row">
             <div class="offset-sm-2 col-sm-4 text-center">
-                <button class="btn btn-success" onclick="guardarVeterinario()">Crear</button>
+                <button class="btn btn-success" onclick="guardarVisita()">Crear</button>
             </div>
             <div class="col-sm-2 text-center">
                 <button class="btn btn-primary" onclick="cancelarVisit()">Cancelar</button>

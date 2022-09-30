@@ -58,6 +58,23 @@ if(isset($_POST['accion'])){
         $contenido=str_replace('[lista_veterinarios]',$veter,$contenido);
         $contenido=str_replace('[lista_mascotas]',$option,$contenido);
         $contenido=str_replace('[lista_medicinas]',$medic,$contenido);
+    }elseif($_POST['accion']=='ingnewvisit'){
+        if(isset($_POST["data"])){
+            
+            $insertar = mysqli_query($xbd, "INSERT INTO vet_visit(id_vet,id_pet,temperature,weight,breathing_freq,heart_rate,visit_date,recommendations) VALUES('".$_POST["data"]["id_vet"]."','".$_POST["data"]["id_pet"]."','".$_POST["data"]["temperature"]."','".$_POST["data"]["weight"]."','".$_POST["data"]["breathing_freq"]."','".$_POST["data"]["heart_rate"]."','".$_POST["data"]["visit_date"]."','".$_POST["data"]["recommendations"]."')");
+            if($insertar){
+                $id_visit = $mysqli->insert_id;
+                $count_medicinas = sizeof($_POST["data"]["medicine"]);
+                for ($i=0; $i < $count_medicinas; $i++) { 
+                    $ins_medicines = mysqli_query($xbd, "INSERT INTO vet_visit(id_visit,id_medicine,medicine_dosage,amount) VALUES('$id_visit','".$_POST["data"]["medicine"][""]."','".$_POST["data"]["medicine_dosage"]."','".$_POST["data"]["amount"]."')");
+                }
+                $contenido = 2;
+            }else{
+                $contenido = 3;
+            }
+        }else{
+            $contenido = "No LLEGO";
+        }
     }elseif($_POST['accion']=='newmascota'){
         $form = "mascota_nuevo.html";
         $owners = mysqli_query($xbd, "SELECT * FROM owner");
