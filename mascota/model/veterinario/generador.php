@@ -8,76 +8,13 @@ if(isset($_POST['accion'])){
 		$mascota = lis_mascotas_gen();
         $contenido=cargar_template("forms/$form");
         $contenido=str_replace('[lis_mascotas]',$mascota,$contenido);
-    }elseif($_POST['accion']=='newowner'){
-        $form = "owner_nuevo.html";
-        $contenido=cargar_template("forms/$form");
-    }elseif($_POST['accion']=='ingnewuser'){
-        if(isset($_POST["data"])){
-            $cedula = $_POST["data"]["cedula"];
-            $validar = mysqli_query($xbd, "SELECT cedula FROM user WHERE cedula = '".$_POST["data"]["cedula"]."' OR user = '".$_POST["data"]["user"]."'");
-            if(mysqli_num_rows ($validar)>0){
-                $contenido = 1;
-            }else{
-                $insertar = mysqli_query($xbd, "INSERT INTO user(cedula,nombres,user,password,id_tip_user) VALUES('".$_POST["data"]["cedula"]."','".$_POST["data"]["nombres"]."','".$_POST["data"]["user"]."','".$_POST["data"]["password"]."','".$_POST["data"]["id_tip_user"]."')");
-                if($insertar){
-                    $contenido = 2;
-                }else{
-                    $contenido = 3;
-                }
-            }
-        }else{
-            $contenido = "No LLEGO";
-        }
-    }elseif($_POST['accion']=='modificar_usuario'){
-        $form = "usuario_modificar.html";
-        $contenido=cargar_template("forms/$form");
-        $usuario = mysqli_query($xbd, "SELECT * FROM user WHERE cedula = '$_POST[id]'");
-        if(mysqli_num_rows ($usuario)>0){
-            $datos = mysqli_fetch_assoc($usuario);
-            $contenido=str_replace('[cedula]',$datos["cedula"],$contenido);
-            $contenido=str_replace('[nombres]',$datos["nombres"],$contenido);
-            $contenido=str_replace('[user]',$datos["user"],$contenido);
-            $contenido=str_replace('[password]',$datos["password"],$contenido);
-        }
-        $tipos = mysqli_query($xbd, "SELECT * FROM tip_user");
-        $option = "<option value=\"--\">--</option>";
-        while($opciones = mysqli_fetch_assoc($tipos)){
-            if(isset($datos["id_tip_user"]) && $datos["id_tip_user"] == $opciones["id_tip_user"] ){
-                $option .= "<option value=\"$opciones[id_tip_user]\" selected >$opciones[tip_user]</option>";
-            }else{
-                $option .= "<option value=\"$opciones[id_tip_user]\">$opciones[tip_user]</option>";
-            }
-            
-        }
-        $contenido=str_replace('[tipos]',$option,$contenido);
-    }elseif($_POST['accion']=='actualizar_usuario'){
-        if(isset($_POST["data"])){
-            $modificar = true;
-            if($_POST["data"]["moduser"] == 'true'){
-                $validar = mysqli_query($xbd, "SELECT cedula FROM user WHERE user = '".$_POST["data"]["user"]."'");
-                if(mysqli_num_rows ($validar)>0){
-                    $modificar = false;
-                    $contenido = 1;
-                }
-            }
-            if($modificar){
-                $actualizar = mysqli_query($xbd, "UPDATE user SET nombres ='".$_POST["data"]["nombres"]."',user = '".$_POST["data"]["user"]."',password = '".$_POST["data"]["password"]."',id_tip_user = '".$_POST["data"]["id_tip_user"]."' WHERE cedula ='".$_POST["data"]["cedula"]."'");
-                if($actualizar){
-                    $contenido = 2;
-                }else{
-                    $contenido = 3;
-                }
-            }            
-        }else{
-            $contenido = "No LLEGO";
-        }
     }elseif($_POST['accion']=='lst_owner'){
         $form = "lis_adm_owner.html";
         $owner = lis_owner_gen();
         $contenido=cargar_template("forms/$form");
         $contenido=str_replace('[lis_adm_owner]',$owner,$contenido);
-	}elseif($_POST['accion']=='newveterinario'){
-        $form = "veterinario_nuevo.html";
+	}elseif($_POST['accion']=='newowner'){
+        $form = "owner_nuevo.html";
         $contenido=cargar_template("forms/$form");
     }elseif($_POST['accion']=='ingnewown'){
         if(isset($_POST["data"])){
@@ -130,6 +67,22 @@ if(isset($_POST['accion'])){
         }
         $contenido=cargar_template("forms/$form");
         $contenido=str_replace('[lst_owners]',$option,$contenido);
+    }elseif($_POST['accion']=='ingnewpet'){
+        if(isset($_POST["data"])){
+            $validar = mysqli_query($xbd, "SELECT id_owner FROM pet WHERE id_owner = '".$_POST["data"]["id_owner"]."' AND name_pet = '".$_POST["data"]["name_pet"]."'");
+            if(mysqli_num_rows ($validar)>0){
+                $contenido = 1;
+            }else{
+                $insertar = mysqli_query($xbd, "INSERT INTO pet(id_owner,name_pet,color,species,breed) VALUES('".$_POST["data"]["id_owner"]."','".$_POST["data"]["name_pet"]."','".$_POST["data"]["color"]."','".$_POST["data"]["species"]."','".$_POST["data"]["breed"]."')");
+                if($insertar){
+                    $contenido = 2;
+                }else{
+                    $contenido = 3;
+                }
+            }
+        }else{
+            $contenido = "No LLEGO";
+        }
     }elseif($_POST['accion']=='Cerrar'){
         session_destroy();
         header('location: ../../index.html');
@@ -139,7 +92,7 @@ if(isset($_POST['accion'])){
 
 function lis_mascotas_gen() {
     global $xbd;
-    $sql = "SELECT * FROM pet";
+    $sql = "SELECT * FROM pet p INNER JOIN owner o ON o.id_owner = p.id_owner";
     $lista = "<table class=\"table table-hover table-sm\">
             <thead>
             <tr class=\"table-primary\">
@@ -155,7 +108,7 @@ function lis_mascotas_gen() {
     while($pet = mysqli_fetch_assoc($mascotas)){
         $lista .= "<tr>
             <td class=\"text-rigth\">$pet[name_pet]</td>
-            <td>$pet[name_pet]</td>
+            <td>$pet[name] $pet[lastname]</td>
             <td>$pet[color]</td>
             <td>$pet[species]</td>
             <td>$pet[breed]</td>

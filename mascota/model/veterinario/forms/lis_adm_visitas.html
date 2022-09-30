@@ -32,42 +32,75 @@
     }
     function fn_add_medicines(){
         $(".vermed").show();
+        $("#btn-formular").hide();
     }
     let medicinas = []
     function fn_add_medicamentos(){
-        var data = new Object();
-        $(".vermed").css('background-color','#fff');
-        if($("#id_medicine").val() == '--' ){
-            alert("Debe selecciona una medicina");
-            $("#id_medicine").css('background-color','#CCCFFF');
-            return false;
-        }
-        data.id_medicine = $("#id_medicine").val();
-        data.name_medicine = $("#id_medicine option:selected").text();
-        if($("#medicine_dosage").val() == '' || parseInt($("#medicine_dosage").val().length) > 60){
-            alert("Debe escribir la dosis que no pase de 60 digitos");
-            $("#medicine_dosage").css('background-color','#CCCFFF');
-            return false;
-        }
-        data.medicine_dosage = $("#medicine_dosage").val();
-        if($("#amount").val() == '' || $("#amount").val() < 0 ){
-            alert("Debe digitar la cantidad");
-            $("#amount").css('background-color','#CCCFFF');
-            return false;
-        }
-        data.amount = $("#amount").val();
-        medicinas.push(data);
+        let valmed = true;
+        console.log(medicinas.length);
         console.log(medicinas);
-        let table = "<h5 class=\"text-center text-danger\">Lista de Medicamentos</h5><table class=\"table table-hover\"><thead><tr><th>id Medicina</th><th>Nombre</th><th>Dosis</th><th>Cantidad</th><th>Retirar</th></thead><tbody>";
-        $.each(medicinas , function( index, obj ) {     
-            table += "<tr>";                     
-            $.each(obj, function( key, value ) { 
-                console.log('¡Hola :'+key+'!'+value);
-                table += '<td><input id="'+key+'" value="'+value+'" class="form-control"></td>';
+        //if(medicinas.length <= 0) {
+            $.each(medicinas , function( index, obj ) {
+                $.each(obj, function( key, value ) {
+                    if(key=='id_medicine' && value == $("#id_medicine").val()){
+                        alert("La medicina "+$("#id_medicine option:selected").text()+ " ya esta formulada.")
+                        valmed = false;
+                    }
+                });
+            });
+        //}
+        if (valmed == true){
+            var data = new Object();
+            $(".vermed").css('background-color','#fff');
+            if($("#id_medicine").val() == '--' ){
+                alert("Debe selecciona una medicina");
+                $("#id_medicine").css('background-color','#CCCFFF');
+                return false;
+            }
+            data.id_medicine = $("#id_medicine").val();
+            data.name_medicine = $("#id_medicine option:selected").text();
+            if($("#medicine_dosage").val() == '' || parseInt($("#medicine_dosage").val().length) > 60){
+                alert("Debe escribir la dosis que no pase de 60 digitos");
+                $("#medicine_dosage").css('background-color','#CCCFFF');
+                return false;
+            }
+            data.medicine_dosage = $("#medicine_dosage").val();
+            if($("#amount").val() == '' || $("#amount").val() <= 0 ){
+                alert("Debe digitar la cantidad");
+                $("#amount").css('background-color','#CCCFFF');
+                return false;
+            }
+            data.amount = $("#amount").val();
+            let ind = medicinas.length;
+            medicinas.push({id:ind, detalle: data});
+            let table = "<h5 class=\"text-center text-danger\">Lista de Medicamentos</h5><table class=\"table table-sm table-striped table-bordered\" style=\"width:100%\"><thead><tr><th class=\"text-center\" width=\"5%\">Itém</th><th class=\"text-center\" width=\"45%\">Nombre</th><th width=\"30%\">Dosis</th><th width=\"15%\">Cantidad</th><th width=\"5%\">Retirar</th></thead><tbody>";
+            $.each(medicinas , function( index, obj ) {     
+                table += "<tr><td class=\"text-center\">"+(obj.id)+"</td>";                     
+                $.each(obj.detalle, function( key, value ) { 
+                    if(key!='id_medicine'){
+                        table += '<td><input id="'+key+'" value="'+value+'" class="form-control" disabled></td>';
+                    }
+                }); 
+                table += '<td class="text-center"><span id="'+index+'" class="delmed"><i class="bi bi-trash3-fill"></i></span></td></tr>'; 
             }); 
-            table += '<td><i class="bi bi-trash3-fill"></i></td></tr>'; 
-          }); 
-          table += "</tbody></table>"; 
-          $("#lista_medicamentos").html(table);
+            table += "</tbody></table>"; 
+            $("#lista_medicamentos").html(table);
+        }else{
+            $("#id_medicine").val('--');
+            $("#medicine_dosage").val('');
+            $("#amount").val(0)
+        }
+        $(".vermed").hide();
+        $("#btn-formular").show();
     }
+    $(document).off('click', '.delmed').on('click', '.delmed', (function(e) {
+        //medicinas = medicinas.filter(item => item !== this.id)
+        medicinas.splice(this.id,1);
+        console.log(medicinas)
+        if(medicinas.length == 0){
+            $("#lista_medicamentos").html('');
+        }else{
+            $(this).closest('tr').remove();
+        }
+    }));
 </script>

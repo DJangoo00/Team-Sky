@@ -67,16 +67,14 @@
             return false;
         }
         data.breed = $("#breed").val();
-
-
-        $.post('generador.php',{accion:'ingnewuser',data}, function(res){
+        $.post('generador.php',{accion:'ingnewpet',data}, function(res){
             if(res == 1){
-                alert("La cedula o el usuario ya existen");
+                alert("La mascota ya existe para ese dueño");
             }else if(res == 2){
-                alert("Se creo el usuario");
+                alert("Se creo la mascota");
                 acc_mod('ini');
             }else if(res == 3){
-                alert("No se creo el usuario");
+                alert("No se creo la mascota");
                 acc_mod('ini');
             }
         })
