@@ -37,18 +37,14 @@
     let medicinas = []
     function fn_add_medicamentos(){
         let valmed = true;
-        console.log(medicinas.length);
-        console.log(medicinas);
-        //if(medicinas.length <= 0) {
-            $.each(medicinas , function( index, obj ) {
-                $.each(obj.detalle, function( key, value ) {
-                    if(key=='id_medicine' && value == $("#id_medicine").val()){
-                        alert("La medicina "+$("#id_medicine option:selected").text()+ " ya esta formulada.")
-                        valmed = false;
-                    }
-                });
+        $.each(medicinas , function( index, obj ) {
+            $.each(obj, function( key, value ) {
+                if(key=='id_medicine' && value == $("#id_medicine").val()){
+                    alert("La medicina "+$("#id_medicine option:selected").text()+ " ya esta formulada.")
+                    valmed = false;
+                }
             });
-        //}
+        });
         if (valmed == true){
             var data = new Object();
             $(".vermed").css('background-color','#fff');
@@ -72,24 +68,26 @@
             }
             data.amount = $("#amount").val();
             let ind = medicinas.length;
-            medicinas.push({id:ind, detalle: data});
+            medicinas.push(data);
+            let idmedicine = 0;
             let table = "<h5 class=\"text-center text-danger\">Lista de Medicamentos</h5><table class=\"table table-sm table-striped table-bordered\" style=\"width:100%\"><thead><tr><th class=\"text-center\" width=\"5%\">Itém</th><th class=\"text-center\" width=\"45%\">Nombre</th><th width=\"30%\">Dosis</th><th width=\"15%\">Cantidad</th><th width=\"5%\">Retirar</th></thead><tbody>";
             $.each(medicinas , function( index, obj ) {     
-                table += "<tr><td class=\"text-center\">"+(obj.id)+"</td>";                     
-                $.each(obj.detalle, function( key, value ) { 
+                table += "<tr><td class=\"text-center\">"+(index+1)+"</td>";                     
+                $.each(obj, function( key, value ) { 
                     if(key!='id_medicine'){
                         table += '<td><input id="'+key+'" value="'+value+'" class="form-control" disabled></td>';
+                    }else{
+                        idmedicine = value;
                     }
                 }); 
-                table += '<td class="text-center"><span id="'+index+'" class="delmed"><i class="bi bi-trash3-fill"></i></span></td></tr>'; 
+                table += '<td class="text-center"><span id="'+idmedicine+'" class="delmed"><i class="bi bi-trash3-fill"></i></span></td></tr>'; 
             }); 
             table += "</tbody></table>"; 
             $("#lista_medicamentos").html(table);
-        }else{
-            $("#id_medicine").val('--');
-            $("#medicine_dosage").val('');
-            $("#amount").val(0)
         }
+        $("#id_medicine").val('--');
+        $("#medicine_dosage").val('');
+        $("#amount").val(0)        
         $(".vermed").hide();
         $("#btn-formular").show();
     }
@@ -147,23 +145,21 @@
         
         data.recommendations = $("#recommendations").val();
         data.medicine = medicinas;
-        console.log(data)
         $.post('generador.php',{accion:'ingnewvisit',data}, function(res){
             if(res == 1){
-                alert("La cedula o el usuario ya existen");
-            }else if(res == 2){
-                alert("Se creo el usuario");
-                acc_mod('ini');
-            }else if(res == 3){
-                alert("No se creo el usuario");
-                acc_mod('ini');
+                alert("Se creo la Visita Correctamente");
+                acc_mod('lst_visitas');
+            }else if(res == 2){                
+                alert("No se creo la visita");
+                acc_mod('lst_visitas');
             }
         })
     }
     $(document).off('click', '.delmed').on('click', '.delmed', (function(e) {
-        //medicinas = medicinas.filter(item => item !== this.id)
-        medicinas.splice(this.id,1);
-        console.log(medicinas)
+        let index = medicinas.findIndex(item => item.id_medicine === this.id);
+        if(index > -1){
+            medicinas.splice(index, 1);
+        }
         if(medicinas.length == 0){
             $("#lista_medicamentos").html('');
         }else{

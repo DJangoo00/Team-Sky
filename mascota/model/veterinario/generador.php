@@ -60,17 +60,17 @@ if(isset($_POST['accion'])){
         $contenido=str_replace('[lista_medicinas]',$medic,$contenido);
     }elseif($_POST['accion']=='ingnewvisit'){
         if(isset($_POST["data"])){
-            
             $insertar = mysqli_query($xbd, "INSERT INTO vet_visit(id_vet,id_pet,temperature,weight,breathing_freq,heart_rate,visit_date,recommendations) VALUES('".$_POST["data"]["id_vet"]."','".$_POST["data"]["id_pet"]."','".$_POST["data"]["temperature"]."','".$_POST["data"]["weight"]."','".$_POST["data"]["breathing_freq"]."','".$_POST["data"]["heart_rate"]."','".$_POST["data"]["visit_date"]."','".$_POST["data"]["recommendations"]."')");
             if($insertar){
                 $id_visit = $mysqli->insert_id;
-                $count_medicinas = sizeof($_POST["data"]["medicine"]);
-                for ($i=0; $i < $count_medicinas; $i++) { 
-                    $ins_medicines = mysqli_query($xbd, "INSERT INTO vet_visit(id_visit,id_medicine,medicine_dosage,amount) VALUES('$id_visit','".$_POST["data"]["medicine"][""]."','".$_POST["data"]["medicine_dosage"]."','".$_POST["data"]["amount"]."')");
+                $data= $_POST["data"]["medicine"];
+                foreach ($data as $key) {
+                    //echo $key["id_medicine"];
+                    $ins_medicines = mysqli_query($xbd, "INSERT INTO visit_prescription(id_visit,id_medicine,medicine_dosage,amount) VALUES('$id_visit','".$key["id_medicine"]."','".$key["medicine_dosage"]."','".$key["amount"]."')");
                 }
-                $contenido = 2;
+                $contenido = 1;
             }else{
-                $contenido = 3;
+                $contenido = 2;
             }
         }else{
             $contenido = "No LLEGO";
@@ -171,7 +171,8 @@ function lis_visitas_gen() {
     $sql = "SELECT vv.id_visit,vv.visit_date,CONCAT(v.name_vet,' ',v.lastname_vet) nombreVeterinario, p.name_pet, vv.temperature, vv.weight, 
                 vv.breathing_freq
             FROM vet_visit vv INNER JOIN veterinarian v ON v.id_vet=vv.id_vet
-            INNER JOIN pet p ON p.id_pet = vv.id_pet";
+            INNER JOIN pet p ON p.id_pet = vv.id_pet
+            ORDER BY vv.id_visit DESC";
     $lista = "<table class=\"table table-hover table-sm\">
             <thead>
             <tr class=\"table-primary\">
